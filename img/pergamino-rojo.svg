@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 800 380" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="rod" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#151b19"/>
+      <stop offset=".38" stop-color="#696458"/>
+      <stop offset=".65" stop-color="#242725"/>
+      <stop offset="1" stop-color="#0e1312"/>
+    </linearGradient>
+    <radialGradient id="parchment" cx="50%" cy="45%" r="69%">
+      <stop offset="0" stop-color="#edb7ad"/>
+      <stop offset=".43" stop-color="#da8d8a"/>
+      <stop offset=".72" stop-color="#a43e48"/>
+      <stop offset="1" stop-color="#5a101c"/>
+    </radialGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".045" numOctaves="2" seed="8" stitchTiles="stitch"/>
+    </filter>
+    <path id="cloth" d="M79 51 Q89 42 91 25 Q94 15 104 17 L113 50 Q126 60 136 49 L142 29 Q148 21 158 27 L164 55 Q182 46 196 59 Q213 55 224 34 Q235 22 245 34 L248 57 Q271 54 282 43 Q294 41 306 60 Q328 56 340 36 Q351 24 359 55 Q380 60 398 45 Q411 42 426 58 Q438 53 449 29 Q462 19 473 52 Q494 64 515 46 Q532 42 545 58 Q559 50 574 29 Q587 20 595 55 Q615 63 634 48 Q649 47 663 57 Q675 26 689 25 Q699 29 702 45 L718 53 Q710 70 716 82 L725 96 713 109 Q729 123 707 144 L722 158 710 179 720 198 704 221 Q724 238 705 257 L721 271 698 291 708 309 691 306 680 326 663 316 649 345 628 331 611 361 589 338 572 369 549 344 531 365 513 345 491 370 472 349 449 376 428 348 401 370 381 350 356 374 337 345 314 360 296 340 271 360 257 336 236 348 219 325 194 339 181 315 155 326 148 302 122 321 114 291 98 304 88 276 76 270 89 254 73 237 89 216 75 199 91 180 77 162 91 145 77 127 93 108 77 93 90 75Z"/>
+    <clipPath id="cloth-clip"><use xlink:href="#cloth"/></clipPath>
+  </defs>
+
+  <rect x="33" y="20" width="734" height="25" rx="10" fill="url(#rod)" stroke="#111615" stroke-width="2"/>
+  <rect x="19" y="12" width="36" height="40" rx="3" fill="url(#rod)" stroke="#111615" stroke-width="3"/>
+  <rect x="745" y="12" width="36" height="40" rx="3" fill="url(#rod)" stroke="#111615" stroke-width="3"/>
+  <path d="M30 17v30m18-30v30m705-30v30m18-30v30" stroke="#9a9080" stroke-width="2" opacity=".42"/>
+
+  <use xlink:href="#cloth" fill="url(#parchment)" stroke="#43161c" stroke-width="4" stroke-linejoin="round"/>
+  <g clip-path="url(#cloth-clip)">
+    <rect x="73" y="40" width="655" height="335" filter="url(#grain)" opacity=".105"/>
+    <path d="M75 77c40 14 74 24 108 12m463 5c30 13 50 7 76-11M89 244c29-8 48-7 64 11m498 20c29-17 45-14 63-10" fill="none" stroke="#4f0f18" stroke-width="10" opacity=".14"/>
+    <path d="M100 83c25 8 19 25 34 28 7 15-9 23-4 40m560-65c-18 23-6 35-18 47-4 12 7 16 2 30" fill="none" stroke="#7b111b" stroke-width="13" stroke-linecap="round" opacity=".22"/>
+    <path d="M177 59c-4 21 7 26 2 47m468-45c-9 29 7 31 0 54M338 312c5 18-8 24-5 39" fill="none" stroke="#6c111a" stroke-width="7" stroke-linecap="round" opacity=".20"/>
+    <ellipse cx="118" cy="264" rx="25" ry="11" fill="#6b0c17" opacity=".15"/>
+    <ellipse cx="665" cy="227" rx="31" ry="9" fill="#7c121c" opacity=".13"/>
+    <path d="M80 66c164 18 457 17 639-3M108 316c163 42 429 31 584-12" fill="none" stroke="#f5d9ca" stroke-width="3" opacity=".13"/>
+  </g>
+</svg>

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0b0d0b" />
+    <title>Carta</title>
+    <link rel="preload" as="image" href="img/fondo.jpg" />
+    <link rel="preload" as="font" type="font/ttf" href="fonts/IslandMoments-Regular.ttf" crossorigin />
+    <link rel="preload" as="font" type="font/ttf" href="fonts/KolkerBrush-Regular.ttf" crossorigin />
+    <link rel="stylesheet" href="styles.css" />
+    <script defer src="vendor/gsap.min.js"></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <main class="scene" id="scene">
+      <div class="scene__glow" aria-hidden="true"></div>
+      <div class="scene__grain" aria-hidden="true"></div>
+      <div class="particles" id="particles" aria-hidden="true"></div>
+      <div class="page-backdrop" aria-hidden="true"></div>
+
+      <p class="instruction">Gira la carta para revela mensaje</p>
+
+      <section class="reveal" aria-label="Carta misteriosa">
+        <div class="card-area" id="card-area">
+          <div class="card-aura" aria-hidden="true"></div>
+          <div class="card-shadow" aria-hidden="true"></div>
+          <div class="card-wrap" id="card-wrap">
+            <input class="card-turn-toggle" id="card-turn-toggle" type="checkbox" aria-label="Girar la carta y acercarse al reverso" />
+            <div class="card-flip" id="card-flip">
+              <div class="card-face card-face--front">
+                <img
+                  class="card-image"
+                  src="img/sin-dragon.png"
+                  alt="Carta antigua de pergamino con un marco ornamental oscuro, aún sin figura central"
+                  width="984"
+                  height="1599"
+                  fetchpriority="high"
+                />
+                <img
+                  class="card-dragon"
+                  id="card-dragon"
+                  src="img/dragon.png"
+                  alt=""
+                  aria-hidden="true"
+                  width="984"
+                  height="1599"
+                />
+                <div class="fire-sweep" id="fire-sweep" aria-hidden="true">
+                  <div class="fire-sweep__halo"></div>
+                  <div class="fire-sweep__body"></div>
+                  <div class="fire-sweep__tongues" id="fire-tongues"></div>
+                  <div class="fire-sweep__embers" id="fire-embers"></div>
+                </div>
+              </div>
+              <div class="card-face card-face--back" aria-hidden="true"></div>
+            </div>
+          </div>
+          <span class="card-area__orbit card-area__orbit--one" aria-hidden="true"></span>
+          <span class="card-area__orbit card-area__orbit--two" aria-hidden="true"></span>
+        </div>
+
+      </section>
+      <a class="skip-ritual" id="skip-to-invitation" href="#invitation" aria-label="Saltar directamente a la convocatoria final">
+        <span class="skip-ritual__icon" aria-hidden="true"><img src="img/mano-clic.png" alt="" width="1155" height="1362" /></span>
+        <span class="skip-ritual__label">ir a la convocatoria</span>
+      </a>
+    </main>
+    <div class="zoom-backdrop" id="zoom-backdrop" aria-hidden="true"></div>
+    <section class="story-text" id="story-text" aria-label="El Trigésimo Octavo Sello">
+      <div class="story-text__inner">
+        <p>Cuentan los antiguos códices que cada año vivido deja tras de sí un sello, una marca que guarda memoria de lo aprendido, lo perdido y lo conquistado.</p>
+        <p>Al completarse el <strong>Trigésimo Octavo Sello</strong>, la tradición exige convocar al <strong>Cónclave</strong> y celebrar el antiguo ritual: reunirse alrededor de una misma mesa, compartir el festín y alzar los brebajes en honor a los sellos ya inscritos.</p>
+        <p>Los viejos escribanos advierten que un sello no debe cerrarse en silencio. <strong>Cuantas más voces participen del ritual, mejores serán los augurios para aquello que aún está por escribirse.</strong></p>
+        <div class="ritual-prompt" id="ritual-prompt">
+          <input class="ritual-prompt__toggle" id="ritual-accept-toggle" type="checkbox" aria-label="Aceptar el ritual" />
+          <span class="ritual-prompt__icon" aria-hidden="true">
+            <img src="img/mano-clic.png" alt="" width="1155" height="1362" />
+            <span class="ritual-prompt__hand-red"></span>
+          </span>
+          <span class="ritual-prompt__label">aceptar el ritual</span>
+        </div>
+      </div>
+    </section>
+    <div class="ritual-sigil" id="ritual-sigil" aria-hidden="true">
+      <div class="ritual-sigil__art">
+        <img class="ritual-sigil__layer ritual-sigil__lines" src="img/lineas.png" alt="" width="1216" height="1293" />
+        <img class="ritual-sigil__layer ritual-sigil__outer" src="img/externo.png" alt="" width="1216" height="1293" />
+        <img class="ritual-sigil__layer ritual-sigil__triangle" src="img/triangulo.png" alt="" width="1367" height="1151" />
+        <img class="ritual-sigil__layer ritual-sigil__inner" src="img/interno.png" alt="" width="1216" height="1293" />
+      </div>
+    </div>
+    <section class="invitation" id="invitation" aria-labelledby="invitation-title">
+      <div class="invitation__content">
+        <header class="invitation__hero" data-reveal>
+          <h1 id="invitation-title">EL RITUAL DEBE CUMPLIRSE</h1>
+        </header>
+
+        <figure class="invitation__seal" data-reveal>
+          <img src="img/sello38.png" alt="Emblema del 38.º sello: No debe cerrarse en silencio" width="1774" height="887" loading="eager" decoding="async" />
+        </figure>
+
+        <div class="invitation__summons" data-reveal>
+          <h2>QUEDÁIS CONVOCADOS</h2>
+          <p>a participar en el</p>
+          <p class="invitation__ritual-name">RITUAL DEL<br /><strong>TRIGÉSIMO OCTAVO SELLO</strong> <br>CUMPLEAÑERO DE MAURICIO</p>
+          
+        </div>
+
+        <div class="invitation__details" data-reveal>
+          <div class="invitation__detail">
+            <img class="invitation__detail-icon" src="img/reloj-arena.png" alt="" aria-hidden="true" width="85" height="85" />
+            <p class="invitation__detail-title">SÁBADO · 10 DE OCTUBRE</p>
+            <p>Desde las <strong>15:00 horas</strong></p>
+          </div>
+          <div class="invitation__detail">
+            <img class="invitation__detail-icon" src="img/torre.png" alt="" aria-hidden="true" width="85" height="85" />
+            <p class="invitation__detail-title">VICTORIA 3098</p>
+            <p>Valparaíso</p>
+          </div>
+        </div>
+
+        <section class="invitation__offerings" aria-labelledby="offerings-title" data-reveal>
+          <h2 id="offerings-title">SOBRE LAS OFRENDAS</h2>
+          <p class="invitation__offerings-lead"><strong>Brebajes, pócimas y elixires<br /> serán bien recibidos.</strong></p>
+          <img class="invitation__offering-icon" src="img/pocima.png" alt="" aria-hidden="true" width="76" height="100" />
+          <a class="invitation__contact-card" href="https://chat.whatsapp.com/JpBUm9G19cHJQugdR7jPeq" target="_blank" rel="noopener noreferrer" aria-label="Abrir el grupo de WhatsApp del Cónclave">
+            <img class="invitation__contact-scroll" src="img/tela.png" alt="" aria-hidden="true" width="1563" height="1006" />
+            <div class="invitation__contact-content">
+              <p class="invitation__contact-lead">Para dudas, consultas o extraños presagios,</p>
+              <img class="invitation__contact-icon" src="img/sello-100 - copia.png" alt="" width="182" height="182" />
+              <p class="invitation__contact-invocation"><strong>Invocad al anfitrión por los medios habituales.</strong></p>
+            </div>
+          </a>
+          <p class="invitation__closing"><em>Acudid con hambre y sed.<br /> El Cónclave os espera.</em></p>
+        </section>
+      </div>
+    </section>
+  </body>
+</html>
