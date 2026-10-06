@@ -287,7 +287,7 @@ body:has(.card-turn-toggle:checked) .skip-ritual { display: none; }
   position: absolute;
   z-index: 3;
   top: 25%;
-  left: 50%;
+  left: 47%;
   width: 54%;
   height: 17%;
   transform: translate(-50%, -50%);
@@ -320,7 +320,7 @@ body:has(.card-turn-toggle:checked) .skip-ritual { display: none; }
 
 .fire-tongue {
   position: absolute;
-  bottom: 29%;
+  bottom: calc(29% + var(--base-offset, 0px));
   left: var(--left);
   width: var(--width);
   height: var(--height);
@@ -712,6 +712,37 @@ body:has(#invitation:target) .ritual-sigil__inner { animation: sigil-spin-counte
   font-weight: 700;
   letter-spacing: .08em;
 }
+.invitation__detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 15px auto 0;
+  padding: 0 8px;
+}
+.invitation__detail-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 34px;
+  padding: 6px 10px;
+  border: 1px solid rgba(49, 67, 55, .52);
+  background: rgba(238, 228, 198, .4);
+  color: #314337;
+  font: 700 11px/1.25 "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  letter-spacing: .06em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+.invitation__detail-link:hover,
+.invitation__detail-link:focus-visible {
+  background: rgba(238, 228, 198, .8);
+  border-color: #314337;
+  transform: translateY(-2px);
+}
+.invitation__detail-link:focus-visible { outline: 2px solid #314337; outline-offset: 3px; }
 
 .invitation__offerings {
   max-width: 720px;

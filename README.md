@@ -41,7 +41,7 @@ Hay otros archivos en `img/`, pero estos catorce recursos gráficos WebP son los
 - La tarjeta de $40.000 conserva el nombre «P» hasta conocer el regalo completo.
 - La introducción aclara que las ofrendas son voluntarias y no son una obligación para participar en el Cónclave.
 - `ofrendas.js` permite seleccionar una tarjeta y muestra el monto elegido. El medio de pago sigue pendiente de definición; esta página todavía no procesa transacciones.
-- «Volver a la convocatoria» apunta a `index.html#invitation`. `script.js` reconoce ese fragmento y abre directamente la escena 5.
+- «Volver a la convocatoria» apunta a `index.html#invitation`. `script.js` reconoce ese fragmento y abre directamente la escena 5, pero elimina el fragmento después para que una recarga reproduzca el ritual desde el comienzo. Si se recarga una URL antigua que todavía contiene `#invitation`, un script temprano en `index.html` lo elimina antes de aplicar los estilos.
 
 ## Vista previa al compartir
 
@@ -74,7 +74,7 @@ Carga de página
 
 - `index.html` coloca `.card-wrap` en el centro de `.card-area`. La cara frontal combina `.card-image` (`sin-dragon.webp`) y `.card-dragon` (`dragon.webp`), inicialmente recortada mediante `clip-path`. Debajo de la carta, el enlace `.skip-ritual` reutiliza `mano-clic.webp` y permite ir directamente a la escena 5 desde la segunda apertura del sitio.
 - `styles.css` define el fondo oscuro, la textura de grano, el aura, dos órbitas y la perspectiva de `1100px`. La carta conserva la proporción `984 / 1599`.
-- `script.js` genera 42 partículas ambientales, 13 lenguas de fuego y 20 brasas con posiciones pseudoaleatorias reproducibles (`seed = 27`). La animación de entrada de `.card-wrap` dura `1.5s` y comienza tras `0.18s`.
+- `script.js` genera 42 partículas ambientales, 13 lenguas de fuego y 20 brasas con posiciones pseudoaleatorias reproducibles (`seed = 27`). Cada llama recibe un desplazamiento de base de ±6 px; `styles.css` sitúa el barrido al `47%` del ancho de la carta. La animación de entrada de `.card-wrap` dura `1.5s` y comienza tras `0.18s`.
 - `revealTimeline` espera `1s`, enciende `#fire-sweep` y descubre el dragón durante `2.4s`. Al terminar, `finishReveal()` quita el recorte restante y actualiza el texto alternativo de la imagen base.
 - El movimiento del mouse se escucha en `document`. `gsap.quickTo()` inclina `.card-wrap` en los ejes X/Y según cercanía y aumenta levemente su escala. Al salir el puntero o perder foco la ventana, vuelve a su estado inicial. No responde a punteros táctiles.
 - En la primera apertura, `script.js` guarda `cum-ritual-has-opened` en `localStorage` y mantiene oculto el salto. Desde la siguiente apertura añade `.has-visited-before` al `<body>` y lo muestra. Si el almacenamiento local está bloqueado o se borran los datos del sitio, se conserva el recorrido completo y la próxima apertura vuelve a tratarse como primera visita.
@@ -113,6 +113,7 @@ Carga de página
 ### Escena 5 — Convocatoria
 
 - `#invitation` está en `index.html` después del relato. Contiene el titular «EL RITUAL DEBE CUMPLIRSE», `img/sello38.webp` centrada, la convocatoria, la fecha, el lugar y la sección de ofrendas. `reloj-arena.webp` y `torre.webp` aparecen sobre sus respectivos datos; `pocima.webp` aparece bajo el texto de las ofrendas.
+- Bajo la hora, un enlace compacto abre la creación del evento en Google Calendar. Bajo «Valparaíso», otro abre la búsqueda de Victoria 3098 en Google Maps. Calendar usa el 10 de octubre de 2026 a las 15:00 en `America/Santiago`, con término provisional a las 18:00 que cada invitado puede editar antes de guardar.
 - `showInvitation()` desplaza esta sección al inicio y añade `.is-visible`. Con GSAP revela los bloques marcados con `data-reveal` de forma escalonada (`0.8s` por bloque, `stagger: 0.11s`). Si se prefiere movimiento reducido, aparece de inmediato.
 - `styles.css` usa una serif local del sistema con alternativas (`Palatino`, `Georgia`, `Times New Roman`), tinta verde oscura, líneas divisorias y un ancho máximo de `920px`. En pantallas estrechas, la fecha y dirección pasan de dos columnas a una.
 - La tarjeta `.invitation__contact-card` enlaza al grupo de WhatsApp del Cónclave. Sobre `img/tela.webp` muestra la introducción en serif Palatino/Georgia, `img/sello-100 - copia.webp` y la invocación en Jim Nightshade blanco, todo centrado. El sello tiene dos pulsos de contorno de `3.6s`, separados por `1.8s`, sin fondo radial ni sombras; responde al hover y al foco de teclado. Con movimiento reducido los contornos quedan estáticos. La imagen de la tela tiene fondo blanco integrado; CSS usa `mix-blend-mode: multiply` para fusionarlo con el pergamino. En pantallas estrechas, el bloque aumenta su altura y ajusta el espacio lateral.

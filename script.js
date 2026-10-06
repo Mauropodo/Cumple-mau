@@ -74,6 +74,7 @@ for (let i = 0; i < 13; i += 1) {
   tongue.style.setProperty("--left", `${4 + i * 7.4}%`);
   tongue.style.setProperty("--width", `${15 + random() * 10}%`);
   tongue.style.setProperty("--height", `${44 + random() * 44}%`);
+  tongue.style.setProperty("--base-offset", `${Math.round((random() - .5) * 12)}px`);
   tongue.style.setProperty("--speed", `${.3 + random() * .4}s`);
   fireTongues.append(tongue);
 }
@@ -499,4 +500,8 @@ if (window.gsap) {
 }
 
 document.body.classList.add("js-ready");
-if (window.location?.hash === "#invitation") goDirectlyToInvitation();
+if (window.location?.hash === "#invitation") {
+  goDirectlyToInvitation();
+  // El salto sirve para llegar desde otras páginas; no debe persistir al recargar.
+  window.history.replaceState(null, "", window.location.href.split("#")[0]);
+}

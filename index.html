@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script>
+      // Al recargar la convocatoria, se reproduce el ritual desde el comienzo.
+      if (location.hash === "#invitation" && performance.getEntriesByType("navigation")[0]?.type === "reload") {
+        history.replaceState(null, "", location.href.split("#")[0]);
+      }
+    </script>
     <meta name="theme-color" content="#0b0d0b" />
     <link rel="icon" type="image/png" href="img/mano-clic.png" />
     <link rel="canonical" href="https://mauropodo.github.io/Cumple-mau/" />
@@ -128,11 +134,17 @@
             <img class="invitation__detail-icon" src="img/reloj-arena-ui.webp" alt="" aria-hidden="true" width="85" height="85" decoding="async" />
             <p class="invitation__detail-title">SÁBADO · 10 DE OCTUBRE</p>
             <p>Desde las <strong>15:00 horas</strong></p>
+            <div class="invitation__detail-actions">
+              <a class="invitation__detail-link" href="https://calendar.google.com/calendar/r/eventedit?action=TEMPLATE&amp;text=Ritual+del+Trig%C3%A9simo+Octavo+Sello+%E2%80%94+Cumplea%C3%B1os+de+Mauricio&amp;dates=20261010T180000Z%2F20261010T210000Z&amp;stz=America%2FSantiago&amp;etz=America%2FSantiago&amp;details=El+C%C3%B3nclave+os+espera.+Acudid+con+hambre+y+sed.&amp;location=Victoria+3098%2C+Valpara%C3%ADso%2C+Chile" target="_blank" rel="noopener noreferrer" aria-label="Añadir el ritual a Google Calendar">Añadir al calendario <span aria-hidden="true">↗</span></a>
+            </div>
           </div>
           <div class="invitation__detail">
             <img class="invitation__detail-icon" src="img/torre.webp" alt="" aria-hidden="true" width="85" height="85" decoding="async" />
             <p class="invitation__detail-title">VICTORIA 3098</p>
             <p>Valparaíso</p>
+            <div class="invitation__detail-actions">
+              <a class="invitation__detail-link" href="https://www.google.com/maps/search/?api=1&amp;query=Victoria+3098%2C+Valpara%C3%ADso%2C+Chile" target="_blank" rel="noopener noreferrer" aria-label="Abrir Victoria 3098, Valparaíso, en Google Maps">Ver ubicación <span aria-hidden="true">↗</span></a>
+            </div>
           </div>
         </div>
 
