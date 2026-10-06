@@ -13,7 +13,8 @@
 
 @font-face {
   font-family: "Island Moments";
-  src: url("fonts/IslandMoments-Regular.ttf") format("truetype");
+  src: url("fonts/IslandMoments-Latin.woff2") format("woff2"),
+       url("fonts/IslandMoments-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -21,7 +22,8 @@
 
 @font-face {
   font-family: "Kolker Brush";
-  src: url("fonts/KolkerBrush-Regular.ttf") format("truetype");
+  src: url("fonts/KolkerBrush-Latin.woff2") format("woff2"),
+       url("fonts/KolkerBrush-Regular.ttf") format("truetype");
   font-style: normal;
   font-weight: 400;
   font-display: swap;
@@ -96,7 +98,7 @@ body {
   inset: 0;
   opacity: 0;
   pointer-events: none;
-  background: url("img/fondo.jpg") center top / cover no-repeat;
+  background: url("img/fondo.webp") center top / cover no-repeat;
 }
 .particle {
   position: absolute;
@@ -126,7 +128,7 @@ body {
   z-index: 6;
   bottom: clamp(20px, 3.5svh, 38px);
   left: 50%;
-  display: flex;
+  display: none;
   flex-direction: column;
   align-items: center;
   gap: 2px;
@@ -141,6 +143,7 @@ body {
   cursor: pointer;
   touch-action: manipulation;
 }
+body.has-visited-before .skip-ritual { display: flex; }
 .skip-ritual:focus-visible { outline: 2px solid #e5c285; outline-offset: 5px; }
 .skip-ritual__icon {
   position: relative;
@@ -257,7 +260,7 @@ body:has(.card-turn-toggle:checked) .skip-ritual { display: none; }
 
 .card-face--back {
   transform: rotateY(180deg);
-  background: url("img/fondo.jpg") center top / cover no-repeat;
+  background: url("img/fondo.webp") center top / cover no-repeat;
 }
 
 .card-image {
@@ -369,7 +372,7 @@ body:has(.card-turn-toggle:checked) .skip-ritual { display: none; }
   visibility: hidden;
   opacity: 0;
   overflow: hidden;
-  background: url("img/fondo.jpg") center top / cover no-repeat;
+  background: url("img/fondo.webp") center top / cover no-repeat;
   box-shadow: 0 25px 100px rgba(0, 0, 0, .65);
   pointer-events: none;
 }
@@ -384,7 +387,7 @@ body.is-skipped .zoom-backdrop {
 }
 
 .scene.is-immersed {
-  background: url("img/fondo.jpg") center top / cover no-repeat;
+  background: url("img/fondo.webp") center top / cover no-repeat;
 }
 
 .scene.is-immersed::before,
@@ -425,6 +428,7 @@ body.is-skipped .zoom-backdrop {
 }
 
 .story-text strong { font-weight: inherit; color: inherit; }
+.story-text p.story-text__question { margin-top: .35em; margin-bottom: 0; }
 .story-letter { opacity: 0; }
 
 .ritual-prompt {
@@ -510,8 +514,8 @@ body.is-skipped .zoom-backdrop {
   aspect-ratio: 1155 / 1362;
   opacity: 0;
   background: #a52d2b;
-  -webkit-mask: url("img/mano-clic.png") center / contain no-repeat;
-  mask: url("img/mano-clic.png") center / contain no-repeat;
+  -webkit-mask: url("img/mano-clic-ui.webp") center / contain no-repeat;
+  mask: url("img/mano-clic-ui.webp") center / contain no-repeat;
   transition: opacity .7s ease;
 }
 
@@ -580,8 +584,11 @@ body:not(.gsap-ready) .ritual-sigil__art { transition: filter .9s ease; }
   object-fit: contain;
   opacity: 0;
   transform-origin: 50% 50%;
-  will-change: transform, opacity;
+  will-change: auto;
 }
+.ritual-sigil.is-active:not(.is-background) .ritual-sigil__layer { will-change: transform, opacity; }
+.ritual-sigil.is-background .ritual-sigil__outer,
+.ritual-sigil.is-background .ritual-sigil__inner { will-change: transform; }
 
 /* Escena 5: convocatoria sobre el mismo pergamino del reverso. */
 .invitation {
@@ -606,7 +613,7 @@ body:not(.gsap-ready) .ritual-sigil__art { transition: filter .9s ease; }
   pointer-events: auto;
 }
 
-/* El enlace de salto funciona también si no llega a ejecutarse JavaScript. */
+/* El destino #invitation conserva una ruta CSS para enlaces directos. */
 body:has(#invitation:target) .page-backdrop { opacity: 1; }
 body:has(#invitation:target) .skip-ritual { display: none; }
 body:has(#invitation:target) .ritual-sigil { visibility: visible; opacity: .2; }
@@ -725,6 +732,32 @@ body:has(#invitation:target) .ritual-sigil__inner { animation: sigil-spin-counte
   object-fit: contain;
   margin: 0 auto 12px;
 }
+.invitation__more-offerings {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-height: 46px;
+  margin: 4px auto 12px;
+  padding: 10px 25px;
+  border: 1px solid rgba(49, 67, 55, .65);
+  background: rgba(238, 228, 198, .48);
+  color: #314337;
+  font: 700 13px/1.3 "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  letter-spacing: .15em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background .25s ease, color .25s ease, transform .25s ease;
+}
+.invitation__more-offerings[hidden] { display: none; }
+.invitation__more-offerings span { font-size: 20px; line-height: 0; }
+.invitation__more-offerings:hover,
+.invitation__more-offerings:focus-visible {
+  background: #314337;
+  color: #f4e9cc;
+  transform: translateY(-2px);
+}
+.invitation__more-offerings:focus-visible { outline: 2px solid #a52d2b; outline-offset: 4px; }
 .invitation__contact-card {
   position: relative;
   display: grid;
@@ -759,16 +792,49 @@ body:has(#invitation:target) .ritual-sigil__inner { animation: sigil-spin-counte
   padding: 10px 12px;
   gap: 12px;
 }
-.invitation__contact-icon {
-  display: block;
+.invitation__contact-icon-wrap {
+  position: relative;
+  display: grid;
+  place-items: center;
   width: clamp(66px, 8vw, 82px);
+  aspect-ratio: 1;
+  isolation: isolate;
+}
+.invitation__contact-icon-wrap::before,
+.invitation__contact-icon-wrap::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  inset: -8px;
+  border: 1px solid rgba(255, 240, 210, .75);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(255, 228, 187, .6);
+  pointer-events: none;
+  animation: contact-seal-pulse 3.6s ease-out infinite;
+}
+.invitation__contact-icon-wrap::after { animation-delay: 1.8s; }
+@keyframes contact-seal-pulse {
+  0% { opacity: 0; transform: scale(.75); }
+  18% { opacity: .8; }
+  75%, 100% { opacity: 0; transform: scale(1.55); }
+}
+.invitation__contact-icon {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
   height: auto;
   padding: 6px;
-  background: radial-gradient(circle, rgba(255, 234, 211, .88), rgba(255, 234, 211, .38) 55%, transparent 72%);
+  background: radial-gradient(circle, rgba(255, 234, 211, .88), rgba(255, 234, 211, .38) 55%, transparent 10%);
   border-radius: 50%;
-  transition: transform .25s ease;
+  filter: drop-shadow(0 0 8px rgba(255, 228, 187, .48));
+  transition: transform .3s ease, filter .3s ease;
 }
-.invitation__contact-card:hover .invitation__contact-icon { transform: scale(1.07); }
+.invitation__contact-card:hover .invitation__contact-icon,
+.invitation__contact-card:focus-visible .invitation__contact-icon {
+  transform: scale(1.13) rotate(-7deg);
+  filter: drop-shadow(0 0 17px rgba(255, 231, 188, .95));
+}
 .invitation__offerings .invitation__contact-card p {
   margin: 0;
   color: inherit;
@@ -783,9 +849,9 @@ body:has(#invitation:target) .ritual-sigil__inner { animation: sigil-spin-counte
   letter-spacing: .015em;
 }
 .invitation__offerings .invitation__contact-card p.invitation__contact-invocation {
-  font-family: "Kolker Brush", "Brush Script MT", cursive;
-  font-size: clamp(37px, 4vw, 44px);
-  line-height: 1.02;
+  font-family: "Jim Nightshade", "Brush Script MT", cursive;
+  font-size: clamp(32px, 4.4vw, 46px);
+  line-height: 1.14;
 }
 .invitation__contact-invocation strong {
   color: inherit;
@@ -844,9 +910,6 @@ body:not(.gsap-ready):has(.ritual-prompt__toggle:checked) .story-text p:nth-chil
 }
 body:not(.gsap-ready):has(.ritual-prompt__toggle:checked) .story-text p:nth-child(2) {
   animation: fallback-text-red .38s .25s forwards;
-}
-body:not(.gsap-ready):has(.ritual-prompt__toggle:checked) .story-text p:nth-child(3) {
-  animation: fallback-text-red .38s .5s forwards;
 }
 body:not(.gsap-ready):has(.ritual-prompt__toggle:checked) .story-text {
   animation: fallback-story-exit .65s 1s forwards;
@@ -986,13 +1049,16 @@ body:not(.gsap-ready) .ritual-sigil.is-skip-final .ritual-sigil__inner {
   .invitation__offerings p br { display: none; }
   .invitation__contact-card { min-height: 440px; padding: 78px 43px 64px; }
   .invitation__contact-content { padding: 8px; gap: 10px; }
-  .invitation__contact-icon { width: 64px; }
+  .invitation__contact-icon-wrap { width: 64px; }
   .invitation__offerings .invitation__contact-card p.invitation__contact-lead { font-size: 18px; }
   .invitation__offerings .invitation__contact-card p.invitation__contact-invocation { font-size: clamp(32px, 8vw, 39px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; }
+  .invitation__contact-icon-wrap::before,
+  .invitation__contact-icon-wrap::after { animation: none; opacity: .35; transform: none; }
+  .invitation__contact-icon { transition: none; }
   .fire-tongue, .fire-ember { animation: none; }
   .ritual-prompt__icon::before,
   .ritual-prompt__icon::after { animation: none; }
@@ -1008,7 +1074,7 @@ body:not(.gsap-ready) .ritual-sigil.is-skip-final .ritual-sigil__inner {
   .ritual-sigil { transition: none; }
   body:not(.gsap-ready) .ritual-sigil__layer { animation: none !important; }
   body:not(.gsap-ready):has(.card-turn-toggle:checked) .scene {
-    background: url("img/fondo.jpg") center top / cover no-repeat;
+    background: url("img/fondo.webp") center top / cover no-repeat;
   }
   body:not(.gsap-ready):has(.card-turn-toggle:checked) .reveal,
   body:not(.gsap-ready):has(.card-turn-toggle:checked) .instruction {

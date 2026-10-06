@@ -23,6 +23,33 @@ let isTransitioning = false;
 let isAccepted = false;
 let sigilTransitionStarted = false;
 let invitationShown = false;
+const ambientTweens = [];
+
+// Algunos navegadores restauran la casilla al recargar y activan el estado rojo antes del clic.
+const resetRitualToggle = () => {
+  if (isAccepted) return;
+  ritualToggle.checked = false;
+  ritualToggle.disabled = false;
+};
+resetRitualToggle();
+window.addEventListener("pageshow", resetRitualToggle);
+
+const stopAmbientAnimation = () => {
+  ambientTweens.forEach((tween) => tween.kill());
+  ambientTweens.length = 0;
+};
+
+// El salto se ofrece a partir de la segunda apertura de este sitio en el navegador.
+try {
+  const visitKey = "cum-ritual-has-opened";
+  if (window.localStorage.getItem(visitKey)) {
+    document.body.classList.add("has-visited-before");
+  } else {
+    window.localStorage.setItem(visitKey, "1");
+  }
+} catch {
+  // Si el navegador bloquea el almacenamiento local, se conserva el recorrido completo.
+}
 
 // Posiciones reproducibles para que el ambiente no cambie bruscamente al recargar.
 let seed = 27;
@@ -90,7 +117,7 @@ const showInvitation = () => {
 };
 
 const goDirectlyToInvitation = (event) => {
-  event.preventDefault();
+  event?.preventDefault();
   if (isTransitioning || invitationShown) return;
 
   isTransitioning = true;
@@ -101,7 +128,10 @@ const goDirectlyToInvitation = (event) => {
   cardArea.style.pointerEvents = "none";
   storyText.style.pointerEvents = "none";
   if (revealTimeline) revealTimeline.kill();
-  if (window.gsap) gsap.killTweensOf(card);
+  if (window.gsap) {
+    stopAmbientAnimation();
+    gsap.killTweensOf(card);
+  }
 
   scene.classList.add("is-immersed");
   document.body.classList.add("is-skipped");
@@ -250,7 +280,7 @@ const showStory = () => {
     });
   });
 
-  const fontReady = document.fonts?.load('40px "Island Moments"') || Promise.resolve();
+  const fontReady = document.fonts?.load('40px "Jim Nightshade"') || Promise.resolve();
   Promise.race([
     Promise.resolve(fontReady).catch(() => {}),
     new Promise((resolve) => window.setTimeout(resolve, 1500))
@@ -327,6 +357,7 @@ const turnCard = () => {
     return;
   }
 
+  stopAmbientAnimation();
   gsap.killTweensOf(card);
   gsap.set(fire, { autoAlpha: 0 });
   gsap.timeline({ onComplete: zoomIntoBack })
@@ -409,12 +440,12 @@ if (window.gsap) {
       .to(fire, { autoAlpha: 0, duration: .45, ease: "power2.out" }, 2.15);
 
     gsap.from(".card-wrap", { y: 34, rotation: -3, scale: .94, duration: 1.5, delay: .18, ease: "power3.out" });
-    gsap.to(".card-aura", { scale: 1.13, autoAlpha: .75, duration: 4.5, repeat: -1, yoyo: true, ease: "sine.inOut" });
-    gsap.to(".card-area__orbit--one", { rotation: 338, duration: 90, repeat: -1, ease: "none" });
-    gsap.to(".card-area__orbit--two", { rotation: -328, duration: 120, repeat: -1, ease: "none" });
+    ambientTweens.push(gsap.to(".card-aura", { scale: 1.13, autoAlpha: .75, duration: 4.5, repeat: -1, yoyo: true, ease: "sine.inOut" }));
+    ambientTweens.push(gsap.to(".card-area__orbit--one", { rotation: 338, duration: 90, repeat: -1, ease: "none" }));
+    ambientTweens.push(gsap.to(".card-area__orbit--two", { rotation: -328, duration: 120, repeat: -1, ease: "none" }));
 
     document.querySelectorAll(".particle").forEach((dot, index) => {
-      gsap.to(dot, {
+      ambientTweens.push(gsap.to(dot, {
         y: -12 - random() * 24,
         x: -8 + random() * 16,
         autoAlpha: .08 + random() * .45,
@@ -423,7 +454,7 @@ if (window.gsap) {
         repeat: -1,
         yoyo: true,
         ease: "sine.inOut"
-      });
+      }));
     });
   });
 
@@ -468,3 +499,4 @@ if (window.gsap) {
 }
 
 document.body.classList.add("js-ready");
+if (window.location?.hash === "#invitation") goDirectlyToInvitation();
