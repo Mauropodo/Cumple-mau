@@ -808,7 +808,6 @@ body:has(#invitation:target) .ritual-sigil__inner { animation: sigil-spin-counte
   inset: -8px;
   border: 1px solid rgba(255, 240, 210, .75);
   border-radius: 50%;
-  box-shadow: 0 0 12px rgba(255, 228, 187, .6);
   pointer-events: none;
   animation: contact-seal-pulse 3.6s ease-out infinite;
 }
@@ -825,15 +824,12 @@ body:has(#invitation:target) .ritual-sigil__inner { animation: sigil-spin-counte
   width: 100%;
   height: auto;
   padding: 6px;
-  background: radial-gradient(circle, rgba(255, 234, 211, .88), rgba(255, 234, 211, .38) 55%, transparent 10%);
   border-radius: 50%;
-  filter: drop-shadow(0 0 8px rgba(255, 228, 187, .48));
-  transition: transform .3s ease, filter .3s ease;
+  transition: transform .3s ease;
 }
 .invitation__contact-card:hover .invitation__contact-icon,
 .invitation__contact-card:focus-visible .invitation__contact-icon {
   transform: scale(1.13) rotate(-7deg);
-  filter: drop-shadow(0 0 17px rgba(255, 231, 188, .95));
 }
 .invitation__offerings .invitation__contact-card p {
   margin: 0;

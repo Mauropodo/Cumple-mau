@@ -17,6 +17,7 @@ Este documento describe **la implementación actual** de `index.html`, `styles.c
 | `img/dragon.webp` | Capa que se descubre sobre la cara inicial. |
 | `img/fondo.webp` | Reverso de la carta y fondo ampliado. Su tamaño actual es 736 × 1104 px. |
 | `img/mano-clic-ui.webp` | Mano del control «aceptar el ritual», ajustada a su tamaño visible. |
+| `img/mano-clic.png` | Favicon de `index.html` y `ofrendas.html`. |
 | `img/lineas.webp`, `img/externo.webp`, `img/triangulo.webp`, `img/interno.webp` | Capas transparentes del sello de transición entre las escenas 4 y 5. |
 | `img/sello38.webp` | Emblema horizontal de la convocatoria en la escena 5. |
 | `img/reloj-arena-ui.webp`, `img/torre.webp` | Iconos de 85 × 85 px sobre la fecha y la dirección. |
@@ -25,6 +26,7 @@ Este documento describe **la implementación actual** de `index.html`, `styles.c
 | `img/tela.webp` | Tela oscura rasgada detrás de la indicación de contacto. |
 | `img/ofrendas/*.webp` | Fotos de productos; nueve referencias de Mercado Libre Chile y cuatro imágenes aportadas por el anfitrión se muestran actualmente en el catálogo. |
 | `img/regalo-placeholder.png` | Foto provisional para la camisa azul y la ofrenda de $40.000, cuyo nombre aún no está definido. |
+| `img/miniatura-compartir.jpg` | Imagen de 614 × 679 px aportada por el anfitrión para la vista previa al compartir la invitación. |
 | `fonts/IslandMoments-Latin.woff2`, `fonts/KolkerBrush-Latin.woff2` | Fuentes locales disponibles de versiones anteriores del diseño. |
 | `fonts/IslandMoments-Regular.ttf`, `fonts/KolkerBrush-Regular.ttf` | Respaldos de las fuentes anteriores. |
 | `fonts/JimNightshade-Regular.ttf`, `fonts/JimNightshade-OFL.txt` | Fuente local y licencia de la invocación en la tela de contacto. |
@@ -40,6 +42,12 @@ Hay otros archivos en `img/`, pero estos catorce recursos gráficos WebP son los
 - La introducción aclara que las ofrendas son voluntarias y no son una obligación para participar en el Cónclave.
 - `ofrendas.js` permite seleccionar una tarjeta y muestra el monto elegido. El medio de pago sigue pendiente de definición; esta página todavía no procesa transacciones.
 - «Volver a la convocatoria» apunta a `index.html#invitation`. `script.js` reconoce ese fragmento y abre directamente la escena 5.
+
+## Vista previa al compartir
+
+- `index.html` incluye título y descripción de página, además de Open Graph (`og:*`) y tarjeta de X (`twitter:*`) en español de Chile. Ambas usan `img/miniatura-compartir.jpg`, con tipo, dimensiones y texto alternativo declarados.
+- La imagen queda guardada localmente en JPEG progresivo (614 × 679 px, aproximadamente 137 KiB). El archivo original adjunto era PNG de aproximadamente 703 KiB.
+- `og:image` y `twitter:image` usan la URL HTTPS absoluta del JPEG publicado; `og:url` y el enlace canónico apuntan al sitio de GitHub Pages. El sitio abierto desde `file://` o `localhost` no puede ser rastreado por las plataformas de mensajería para generar la vista previa.
 
 ## Rendimiento
 
@@ -107,7 +115,7 @@ Carga de página
 - `#invitation` está en `index.html` después del relato. Contiene el titular «EL RITUAL DEBE CUMPLIRSE», `img/sello38.webp` centrada, la convocatoria, la fecha, el lugar y la sección de ofrendas. `reloj-arena.webp` y `torre.webp` aparecen sobre sus respectivos datos; `pocima.webp` aparece bajo el texto de las ofrendas.
 - `showInvitation()` desplaza esta sección al inicio y añade `.is-visible`. Con GSAP revela los bloques marcados con `data-reveal` de forma escalonada (`0.8s` por bloque, `stagger: 0.11s`). Si se prefiere movimiento reducido, aparece de inmediato.
 - `styles.css` usa una serif local del sistema con alternativas (`Palatino`, `Georgia`, `Times New Roman`), tinta verde oscura, líneas divisorias y un ancho máximo de `920px`. En pantallas estrechas, la fecha y dirección pasan de dos columnas a una.
-- La tarjeta `.invitation__contact-card` enlaza al grupo de WhatsApp del Cónclave. Sobre `img/tela.webp` muestra la introducción en serif Palatino/Georgia, `img/sello-100 - copia.webp` y la invocación en Jim Nightshade blanco, todo centrado. El sello tiene dos halos de `3.6s`, separados por `1.8s`, y responde al hover y al foco de teclado; con movimiento reducido los halos quedan estáticos. La imagen de la tela tiene fondo blanco integrado; CSS usa `mix-blend-mode: multiply` para fusionarlo con el pergamino. En pantallas estrechas, el bloque aumenta su altura y ajusta el espacio lateral.
+- La tarjeta `.invitation__contact-card` enlaza al grupo de WhatsApp del Cónclave. Sobre `img/tela.webp` muestra la introducción en serif Palatino/Georgia, `img/sello-100 - copia.webp` y la invocación en Jim Nightshade blanco, todo centrado. El sello tiene dos pulsos de contorno de `3.6s`, separados por `1.8s`, sin fondo radial ni sombras; responde al hover y al foco de teclado. Con movimiento reducido los contornos quedan estáticos. La imagen de la tela tiene fondo blanco integrado; CSS usa `mix-blend-mode: multiply` para fusionarlo con el pergamino. En pantallas estrechas, el bloque aumenta su altura y ajusta el espacio lateral.
 - La sección ocupa la ventana y permite desplazamiento vertical. El fondo de pergamino y el sello rojo al `20%` permanecen fijos detrás; los dos anillos siguen girando lentamente. Si GSAP no carga pero sí se ejecuta `script.js`, el sello empieza `1.65s` después de aceptar y la convocatoria aparece tras su animación. Si tampoco se ejecuta JS, `fallback-invitation` la muestra con CSS.
 
 ## Guía para cambiar valores
